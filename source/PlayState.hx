@@ -1,11 +1,14 @@
 package;
 
 import enemies.Enemy;
+import enemies.Shooty;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
 import guns.Bullet;
+import guns.EnemyBullet;
 import guns.Gun;
 import guns.Pistol;
 
@@ -18,11 +21,13 @@ class PlayState extends FlxState
 	var map:GameMap;
 
 	public var bullets:FlxTypedGroup<Bullet>;
+	public var enemyBullets:FlxTypedGroup<EnemyBullet>;
 	public var enemies:FlxTypedGroup<Enemy>;
 
 	override public function create()
 	{
 		player = new Player(50, 50);
+
 		bullets = new FlxTypedGroup();
 		for (i in 0...100)
 		{
@@ -30,6 +35,14 @@ class PlayState extends FlxState
 			b.kill();
 			bullets.add(b);
 		}
+		enemyBullets = new FlxTypedGroup();
+		for (i in 0...250)
+		{
+			var eb:EnemyBullet = new EnemyBullet();
+			eb.kill();
+			enemyBullets.add(eb);
+		}
+
 		gun = new Pistol(25, player, bullets, 0.5, 350);
 
 		map = new GameMap(Std.int(MAPSIZE.x), Std.int(MAPSIZE.y));
@@ -41,26 +54,59 @@ class PlayState extends FlxState
 
 		FlxG.camera.follow(player, TOPDOWN, 1);
 
+		enemies = new FlxTypedGroup();
+		enemies.add(new Shooty(enemyBullets, 75, 75, 1, 200));
+
 		add(map);
 		add(player);
+		add(enemies);
 		add(gun);
 		add(bullets);
+		add(enemyBullets);
 		super.create();
 	}
 
 	override public function update(elapsed:Float)
 	{
-		// if (FlxG.mouse.justPressed)
-		// {
-		// 	map.generateMap();
-		// }
-		FlxG.collide(player, map);
-		// map.overlapsWithCallback(bullets, removeBullet);
 		super.update(elapsed);
+		FlxG.collide(player, map);
+		FlxG.collide(enemies, map);
+		FlxG.collide(map, bullets, removeBullet);
+		FlxG.collide(map, enemyBullets, removeEBullet);
+		FlxG.collide(enemies, bullets, bulletCollidesEnemy);
+		enemies.forEachAlive(checkEnemyVision);
 	}
 
-	function removeBullet(bullet:Bullet)
+	function removeBullet(tile:FlxObject, bullet:Bullet)
 	{
 		bullet.kill();
+	}
+
+	function removeEBullet(tile:FlxObject, bullet:EnemyBullet)
+	{
+		bullet.kill();
+	}
+
+	function bulletCollidesEnemy(enemy:Enemy, bullet:Bullet)
+	{
+		bullet.kill();
+		enemy.health--;
+		if (enemy.health <= 0)
+		{
+			enemy.kill();
+		}
+	}
+
+	function checkEnemyVision(enemy:Enemy)
+	{
+		if (map.ray(enemy.getMidpoint(), player.getMidpoint()))
+		{
+			enemy.seesPlayer = true;
+			enemy.playerPosition = player.getMidpoint();
+		}
+		else
+		{
+			enemy.seesPlayer = false;
+		}
 	}
 }

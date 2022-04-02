@@ -20,6 +20,8 @@ class PlayState extends FlxState
 	var gun:Gun;
 	var map:GameMap;
 
+	var wave:Int = 0;
+
 	public var bullets:FlxTypedGroup<Bullet>;
 	public var enemyBullets:FlxTypedGroup<EnemyBullet>;
 	public var enemies:FlxTypedGroup<Enemy>;
@@ -55,7 +57,6 @@ class PlayState extends FlxState
 		FlxG.camera.follow(player, TOPDOWN, 1);
 
 		enemies = new FlxTypedGroup();
-		enemies.add(new Shooty(enemyBullets, 75, 75, 1, 200));
 
 		add(map);
 		add(player);
@@ -63,6 +64,8 @@ class PlayState extends FlxState
 		add(gun);
 		add(bullets);
 		add(enemyBullets);
+
+		nextWave();
 		super.create();
 	}
 
@@ -75,6 +78,19 @@ class PlayState extends FlxState
 		FlxG.collide(map, enemyBullets, removeEBullet);
 		FlxG.collide(enemies, bullets, bulletCollidesEnemy);
 		enemies.forEachAlive(checkEnemyVision);
+	}
+
+	function nextWave()
+	{
+		wave++;
+		enemies = new FlxTypedGroup();
+		var numEnemies:Int = Std.int((wave + 5) * 1.1);
+		for (i in 0...numEnemies)
+		{
+			var tileCoords:Array<FlxPoint> = map.getTileCoords(0, true);
+			var ePos = tileCoords[FlxG.random.int(0, tileCoords.length - 1)];
+			enemies.add(new Shooty(enemyBullets, ePos.x, ePos.y, (1 / wave) * 0.5, 200));
+		}
 	}
 
 	function removeBullet(tile:FlxObject, bullet:Bullet)

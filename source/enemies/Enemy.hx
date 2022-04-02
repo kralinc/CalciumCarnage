@@ -2,9 +2,12 @@ package enemies;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
 import guns.EnemyBullet;
+
+using flixel.util.FlxSpriteUtil;
 
 class Enemy extends FlxSprite
 {
@@ -16,11 +19,13 @@ class Enemy extends FlxSprite
 	public var playerPosition:FlxPoint;
 	public var bullets:FlxTypedGroup<EnemyBullet>;
 
+	var healthBar:FlxSprite;
 	var thinkTimer:Float = 0;
 	var shootTimeLimit:Float;
 	var shootTimer:Float = 0;
 	var speed:Float;
 	var bulletSpeed:Float;
+	var maxHealth:Int;
 
 	public override function new(bullets:FlxTypedGroup<EnemyBullet>, x:Float, y:Float, bulletSpeed:Float, health:Int)
 	{
@@ -29,11 +34,18 @@ class Enemy extends FlxSprite
 		this.bullets = bullets;
 		this.bulletSpeed = bulletSpeed;
 		this.health = health;
+		maxHealth = health;
+		healthBar = makeGraphic(10, 3, 0xff0000);
+		this.flicker(FLICKERTIMER);
 	}
 
 	public override function update(elapsed:Float)
 	{
-		think(elapsed);
+		if (!this.isFlickering())
+		{
+			think(elapsed);
+		}
+		healthBar.width = (10 / maxHealth) * health;
 		super.update(elapsed);
 	}
 

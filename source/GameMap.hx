@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.tile.FlxTilemap;
 
 class GameMap extends FlxTilemap
@@ -33,7 +34,7 @@ class GameMap extends FlxTilemap
 		{
 			for (i in 0...map.length)
 			{
-				var rand:Float = Math.random();
+				var rand:Float = FlxG.random.float();
 				if (rand < init_chance)
 				{
 					map[i][j] = 2;

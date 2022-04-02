@@ -2,7 +2,7 @@ package guns;
 
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
-import flixel.math.FlxVelocity;
+import flixel.util.FlxColor;
 
 class BulletOwner
 {
@@ -23,6 +23,7 @@ class Bullet extends FlxSprite
 		super(x, y);
 		this.velocity = velocity;
 		this.owner = owner;
+		makeGraphic(8, 8, FlxColor.WHITE);
 	}
 
 	public function init(x:Float, y:Float, velocity:FlxPoint, owner:String)

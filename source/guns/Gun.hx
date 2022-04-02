@@ -45,6 +45,7 @@ class Gun extends FlxSprite
 			shootTimer += elapsed;
 			if (shootTimer >= delay)
 			{
+				FlxG.camera.shake(0.005, 0.05);
 				playerGunSound.stop();
 				shoot();
 				playerGunSound.play();

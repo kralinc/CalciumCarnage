@@ -15,6 +15,8 @@ import flixel.util.FlxSpriteUtil;
 import guns.Bullet;
 import guns.EnemyBullet;
 import guns.Gun;
+import guns.GunPickup;
+import guns.MachineGun;
 import guns.Pistol;
 import hud.GameOverHud;
 import hud.Hud;
@@ -22,12 +24,20 @@ import hud.Hud;
 class PlayState extends FlxState
 {
 	private static var MAPSIZE:FlxPoint = new FlxPoint(25, 25);
+	public static var GUNRADIUS:Float = 20;
 
 	var player:Player;
 	var gun:Gun;
 	var map:GameMap;
 	var hud:Hud;
 	var goHud:GameOverHud;
+	var gunPickup:GunPickup;
+
+	var gunPickupTimer:Float = 0;
+	var gunPickupTimeLimit:Float = 30;
+	var hasPickup:Bool = false;
+	var gunPickupUsageTimer:Float = 0;
+	var gunPickupUsageTimeLimit:Float = 12;
 
 	var wave:Int = 0;
 
@@ -54,7 +64,8 @@ class PlayState extends FlxState
 			enemyBullets.add(eb);
 		}
 
-		gun = new Pistol(20, player, bullets, 0.5, 350);
+		gun = new Pistol(PlayState.GUNRADIUS, player, bullets);
+		gunPickup = new GunPickup(player, bullets);
 
 		map = new GameMap(Std.int(MAPSIZE.x), Std.int(MAPSIZE.y));
 		map.follow();
@@ -74,6 +85,7 @@ class PlayState extends FlxState
 
 		add(map);
 		add(player);
+		add(gunPickup);
 		add(enemies);
 		add(gun);
 		add(bullets);
@@ -95,7 +107,22 @@ class PlayState extends FlxState
 		FlxG.collide(map, enemyBullets, removeEBullet);
 		FlxG.overlap(enemies, bullets, bulletTouchEnemy);
 		FlxG.overlap(player, enemyBullets, playerTouchEBullet);
+		FlxG.overlap(player, gunPickup, pickupGun);
 		enemies.forEachAlive(checkEnemyVision);
+
+		gunPickupTimer += elapsed;
+		if (gunPickupTimer >= gunPickupTimeLimit)
+		{
+			resetGunPickup();
+		}
+		if (hasPickup)
+		{
+			gunPickupUsageTimer += elapsed;
+			if (gunPickupUsageTimer >= gunPickupUsageTimeLimit)
+			{
+				endGunPickup();
+			}
+		}
 	}
 
 	function nextWave()
@@ -189,6 +216,32 @@ class PlayState extends FlxState
 		{
 			enemy.seesPlayer = false;
 		}
+	}
+
+	function resetGunPickup()
+	{
+		var tileCoords:Array<FlxPoint> = map.getTileCoords(1, true);
+		var pos:FlxPoint = getNewEnemyPosition(tileCoords);
+		gunPickup.revive();
+		gunPickup.init(pos.x, pos.y, GunType.MACHINEGUN);
+		gunPickupTimer = 0;
+		gunPickupTimeLimit = FlxG.random.int(30, 75);
+	}
+
+	function pickupGun(player:Player, gunpickup:GunPickup)
+	{
+		gun = gunpickup.getGun();
+		hasPickup = true;
+		gunPickupUsageTimer = 0;
+		gunpickup.kill();
+	}
+
+	function endGunPickup()
+	{
+		gun = new Pistol(GUNRADIUS, player, bullets);
+		gunPickupUsageTimer = 0;
+		gunPickupTimer = 0;
+		hasPickup = false;
 	}
 
 	function gameOver()

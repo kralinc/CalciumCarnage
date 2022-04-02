@@ -7,6 +7,8 @@ import flixel.FlxObject;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
+import flixel.math.FlxVelocity;
+import flixel.util.FlxSpriteUtil;
 import guns.Bullet;
 import guns.EnemyBullet;
 import guns.Gun;
@@ -19,6 +21,7 @@ class PlayState extends FlxState
 	var player:Player;
 	var gun:Gun;
 	var map:GameMap;
+	var hud:Hud;
 
 	var wave:Int = 0;
 
@@ -58,12 +61,15 @@ class PlayState extends FlxState
 
 		enemies = new FlxTypedGroup();
 
+		hud = new Hud(player);
+
 		add(map);
 		add(player);
 		add(enemies);
 		add(gun);
 		add(bullets);
 		add(enemyBullets);
+		add(hud);
 
 		nextWave();
 		super.create();
@@ -76,20 +82,22 @@ class PlayState extends FlxState
 		FlxG.collide(enemies, map);
 		FlxG.collide(map, bullets, removeBullet);
 		FlxG.collide(map, enemyBullets, removeEBullet);
-		FlxG.collide(enemies, bullets, bulletCollidesEnemy);
+		FlxG.overlap(enemies, bullets, bulletTouchEnemy);
+		FlxG.overlap(player, enemyBullets, playerTouchEBullet);
 		enemies.forEachAlive(checkEnemyVision);
 	}
 
 	function nextWave()
 	{
 		wave++;
-		enemies = new FlxTypedGroup();
+		hud.setWaveText(wave);
+		enemies.clear();
 		var numEnemies:Int = Std.int((wave + 5) * 1.1);
 		for (i in 0...numEnemies)
 		{
-			var tileCoords:Array<FlxPoint> = map.getTileCoords(0, true);
+			var tileCoords:Array<FlxPoint> = map.getTileCoords(1, true);
 			var ePos = tileCoords[FlxG.random.int(0, tileCoords.length - 1)];
-			enemies.add(new Shooty(enemyBullets, ePos.x, ePos.y, (1 / wave) * 0.5, 200));
+			enemies.add(new Shooty(enemyBullets, ePos.x, ePos.y, 4 - (0.1 * wave), 100 + (2 * wave)));
 		}
 	}
 
@@ -103,19 +111,39 @@ class PlayState extends FlxState
 		bullet.kill();
 	}
 
-	function bulletCollidesEnemy(enemy:Enemy, bullet:Bullet)
+	function bulletTouchEnemy(enemy:Enemy, bullet:Bullet)
 	{
 		bullet.kill();
-		enemy.health--;
-		if (enemy.health <= 0)
+		if (!FlxSpriteUtil.isFlickering(enemy))
 		{
-			enemy.kill();
+			enemy.health--;
+			if (enemy.health <= 0)
+			{
+				enemy.kill();
+				hud.addScore(1);
+				if (enemies.countLiving() <= 0)
+				{
+					nextWave();
+				}
+			}
+		}
+	}
+
+	function playerTouchEBullet(player:Player, eb:EnemyBullet)
+	{
+		eb.kill();
+		if (!FlxSpriteUtil.isFlickering(player))
+		{
+			player.health--;
+			FlxSpriteUtil.flicker(player);
 		}
 	}
 
 	function checkEnemyVision(enemy:Enemy)
 	{
-		if (map.ray(enemy.getMidpoint(), player.getMidpoint()))
+		var canSeePlayer:Bool = map.ray(enemy.getMidpoint(), player.getMidpoint());
+
+		if (canSeePlayer && enemy.isOnScreen())
 		{
 			enemy.seesPlayer = true;
 			enemy.playerPosition = player.getMidpoint();

@@ -26,6 +26,7 @@ class Enemy extends FlxSprite
 	var speed:Float;
 	var bulletSpeed:Float;
 	var maxHealth:Int;
+	var viewDistance:Float;
 
 	public override function new(bullets:FlxTypedGroup<EnemyBullet>, x:Float, y:Float, bulletSpeed:Float, health:Int)
 	{
@@ -35,8 +36,7 @@ class Enemy extends FlxSprite
 		this.bulletSpeed = bulletSpeed;
 		this.health = health;
 		maxHealth = health;
-		healthBar = makeGraphic(10, 3, 0xff0000);
-		this.flicker(FLICKERTIMER);
+		this.flicker(FLICKERTIMER, 0.05, true);
 	}
 
 	public override function update(elapsed:Float)
@@ -45,7 +45,6 @@ class Enemy extends FlxSprite
 		{
 			think(elapsed);
 		}
-		healthBar.width = (10 / maxHealth) * health;
 		super.update(elapsed);
 	}
 

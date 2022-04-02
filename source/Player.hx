@@ -3,6 +3,8 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 
+using flixel.util.FlxSpriteUtil;
+
 class Player extends FlxSprite
 {
 	var speed:Float;
@@ -11,6 +13,7 @@ class Player extends FlxSprite
 	{
 		super(x, y);
 		this.speed = speed;
+		health = 3;
 		// loadGraphic(AssetPaths.benny8bit__png, false, 16, 20);
 	}
 

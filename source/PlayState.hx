@@ -122,7 +122,7 @@ class PlayState extends FlxState
 	function bulletTouchEnemy(enemy:Enemy, bullet:Bullet)
 	{
 		bullet.kill();
-		if (!FlxSpriteUtil.isFlickering(enemy))
+		if (!FlxSpriteUtil.isFlickering(enemy) && enemy.alive)
 		{
 			enemy.health--;
 			if (enemy.health <= 0)

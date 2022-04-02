@@ -84,6 +84,6 @@ class Hud extends FlxTypedGroup<FlxSprite>
 
 	public function setWaveText(wave:Int)
 	{
-		waveText.text = "Wave: " + wave;
+		waveText.text = "Wave " + wave;
 	}
 }

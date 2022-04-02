@@ -30,7 +30,7 @@ class GameOverHud extends FlxTypedGroup<FlxSprite>
 		scoreText = new FlxText(FlxG.width / 10, FlxG.height / 3, 0, "Score: NaN", 32);
 		scoreText.scrollFactor.set(0, 0);
 
-		waveText = new FlxText(FlxG.width - FlxG.width / 5, scoreText.height, 0, "Wave NaN", 32);
+		waveText = new FlxText(FlxG.width - FlxG.width / 3, scoreText.y, 0, "Wave NaN", 32);
 
 		retryButton = new FlxButton(FlxG.width / 3, FlxG.height / 2, "Retry", restart);
 		retryButton.scrollFactor.set(0, 0);
@@ -42,6 +42,8 @@ class GameOverHud extends FlxTypedGroup<FlxSprite>
 		add(gameOverText);
 		add(retryButton);
 		add(quitButton);
+		add(scoreText);
+		add(waveText);
 	}
 
 	public function setData(score:Int, wave:Int)

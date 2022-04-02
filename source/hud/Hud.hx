@@ -1,4 +1,4 @@
-package;
+package hud;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -40,7 +40,8 @@ class Hud extends FlxTypedGroup<FlxSprite>
 		scoreCounter = new FlxText(scoreSprite.x + scoreSprite.width + textOffset, textHeight, 0, "" + score, textSize);
 		scoreCounter.scrollFactor.set(0, 0);
 
-		waveText = new FlxText(livesCounter.x + livesCounter.width + textOffset, textHeight, 0, "", textSize);
+		waveText = new FlxText(livesCounter.x + livesCounter.fieldWidth + 2 * textOffset, textHeight, 0, "", textSize);
+		waveText.scrollFactor.set(0, 0);
 
 		add(background);
 		add(livesCounter);

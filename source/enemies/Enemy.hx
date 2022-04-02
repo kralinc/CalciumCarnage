@@ -5,6 +5,8 @@ import flixel.FlxSprite;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import guns.EnemyBullet;
 
 using flixel.util.FlxSpriteUtil;
@@ -46,6 +48,17 @@ class Enemy extends FlxSprite
 			think(elapsed);
 		}
 		super.update(elapsed);
+	}
+
+	public override function kill()
+	{
+		alive = false;
+		FlxTween.tween(this, {alpha: 0, y: y - 16, angle: 3.1415}, 0.33, {ease: FlxEase.circOut, onComplete: finishKill});
+	}
+
+	function finishKill(_)
+	{
+		exists = false;
 	}
 
 	function think(elapsed:Float) {}

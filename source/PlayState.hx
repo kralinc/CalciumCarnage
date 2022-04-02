@@ -13,6 +13,8 @@ import guns.Bullet;
 import guns.EnemyBullet;
 import guns.Gun;
 import guns.Pistol;
+import hud.GameOverHud;
+import hud.Hud;
 
 class PlayState extends FlxState
 {
@@ -22,6 +24,8 @@ class PlayState extends FlxState
 	var gun:Gun;
 	var map:GameMap;
 	var hud:Hud;
+	var goHud:GameOverHud;
+	var cam:CamFollow;
 
 	var wave:Int = 0;
 
@@ -41,7 +45,7 @@ class PlayState extends FlxState
 			bullets.add(b);
 		}
 		enemyBullets = new FlxTypedGroup();
-		for (i in 0...250)
+		for (i in 0...200)
 		{
 			var eb:EnemyBullet = new EnemyBullet();
 			eb.kill();
@@ -57,11 +61,15 @@ class PlayState extends FlxState
 		var playerStart:FlxPoint = map.getTileCoords(1, false)[Std.int(MAPSIZE.y)];
 		player.setPosition(playerStart.x, playerStart.y);
 
-		FlxG.camera.follow(player, TOPDOWN, 1);
+		cam = new CamFollow(player);
+		FlxG.camera.follow(player, TOPDOWN_TIGHT, 1);
 
 		enemies = new FlxTypedGroup();
 
 		hud = new Hud(player);
+
+		goHud = new GameOverHud();
+		goHud.kill();
 
 		add(map);
 		add(player);
@@ -70,6 +78,8 @@ class PlayState extends FlxState
 		add(bullets);
 		add(enemyBullets);
 		add(hud);
+		add(cam);
+		add(goHud);
 
 		nextWave();
 		super.create();
@@ -80,6 +90,7 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		FlxG.collide(player, map);
 		FlxG.collide(enemies, map);
+		FlxG.collide(player, enemies);
 		FlxG.collide(map, bullets, removeBullet);
 		FlxG.collide(map, enemyBullets, removeEBullet);
 		FlxG.overlap(enemies, bullets, bulletTouchEnemy);
@@ -136,6 +147,14 @@ class PlayState extends FlxState
 		{
 			player.health--;
 			FlxSpriteUtil.flicker(player);
+			if (player.health <= 0)
+			{
+				player.kill();
+				cam.kill();
+				gun.kill();
+				hud.kill();
+				goHud.revive();
+			}
 		}
 	}
 

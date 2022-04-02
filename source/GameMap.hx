@@ -6,7 +6,7 @@ import flixel.tile.FlxTilemap;
 class GameMap extends FlxTilemap
 {
 	static var PASSES:Int = 5;
-	static var init_chance:Float = 0.1;
+	static var init_chance:Float = 0.3;
 	// static var max_enemies:Int = 10;
 	// static var enemy_chance = 0.075;
 	static var cavern_threshold:Float = 0.33;

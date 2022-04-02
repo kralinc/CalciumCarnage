@@ -72,6 +72,11 @@ class Hud extends FlxTypedGroup<FlxSprite>
 		scoreCounter.text = "" + this.score;
 	}
 
+	public function getScore()
+	{
+		return score;
+	}
+
 	public function setLivesText()
 	{
 		livesCounter.text = "" + player.health;

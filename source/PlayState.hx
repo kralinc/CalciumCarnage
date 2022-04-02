@@ -25,7 +25,6 @@ class PlayState extends FlxState
 	var map:GameMap;
 	var hud:Hud;
 	var goHud:GameOverHud;
-	var cam:CamFollow;
 
 	var wave:Int = 0;
 
@@ -61,7 +60,6 @@ class PlayState extends FlxState
 		var playerStart:FlxPoint = map.getTileCoords(1, false)[Std.int(MAPSIZE.y)];
 		player.setPosition(playerStart.x, playerStart.y);
 
-		cam = new CamFollow(player);
 		FlxG.camera.follow(player, TOPDOWN_TIGHT, 1);
 
 		enemies = new FlxTypedGroup();
@@ -78,7 +76,6 @@ class PlayState extends FlxState
 		add(bullets);
 		add(enemyBullets);
 		add(hud);
-		add(cam);
 		add(goHud);
 
 		nextWave();
@@ -149,11 +146,7 @@ class PlayState extends FlxState
 			FlxSpriteUtil.flicker(player);
 			if (player.health <= 0)
 			{
-				player.kill();
-				cam.kill();
-				gun.kill();
-				hud.kill();
-				goHud.revive();
+				gameOver();
 			}
 		}
 	}
@@ -171,5 +164,14 @@ class PlayState extends FlxState
 		{
 			enemy.seesPlayer = false;
 		}
+	}
+
+	function gameOver()
+	{
+		player.kill();
+		gun.kill();
+		hud.kill();
+		goHud.revive();
+		goHud.setData(hud.getScore(), wave);
 	}
 }

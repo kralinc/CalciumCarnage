@@ -6,6 +6,7 @@ import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.mouse.FlxMouse;
 import flixel.math.FlxPoint;
+import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 
 class Gun extends FlxSprite
@@ -17,6 +18,7 @@ class Gun extends FlxSprite
 	var bulletVelocity:Float;
 	var gunAngle:Float;
 	var shootTimer:Float;
+	var playerGunSound:FlxSound;
 
 	public override function new(radius:Float, center:FlxSprite, bullets:FlxTypedGroup<Bullet>, delay:Float, bulletVelocity:Float, ?width:Int = 20,
 			?height:Int = 10)
@@ -27,6 +29,7 @@ class Gun extends FlxSprite
 		this.radius = radius;
 		this.delay = delay;
 		this.bulletVelocity = bulletVelocity;
+		playerGunSound = FlxG.sound.load(AssetPaths.gun__wav);
 		makeGraphic(width, height, FlxColor.RED);
 	}
 
@@ -42,7 +45,9 @@ class Gun extends FlxSprite
 			shootTimer += elapsed;
 			if (shootTimer >= delay)
 			{
+				playerGunSound.stop();
 				shoot();
+				playerGunSound.play();
 				shootTimer = 0;
 			}
 		}

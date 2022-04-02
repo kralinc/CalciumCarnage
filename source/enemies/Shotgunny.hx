@@ -4,15 +4,18 @@ import flixel.FlxG;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVelocity;
+import flixel.util.FlxColor;
 import guns.EnemyBullet;
 
-class Shooty extends Enemy
+class ShotGunny extends Enemy
 {
 	public override function new(bullets:FlxTypedGroup<EnemyBullet>, x:Float, y:Float, shootTimeLimit:Float, speed:Float)
 	{
-		super(bullets, x, y, 200, 2);
+		super(bullets, x, y, 340, 4);
 		this.shootTimeLimit = shootTimeLimit;
 		this.speed = speed;
+		moveToPlayerWeight = 0.8;
+		makeGraphic(16, 16, FlxColor.YELLOW);
 	}
 
 	override function think(elapsed:Float)
@@ -51,7 +54,14 @@ class Shooty extends Enemy
 
 	override function shoot()
 	{
+		var angleToPlayer:Float = Math.atan2(playerPosition.y - y, playerPosition.x - x);
+		var playerAngleLeft:FlxPoint = new FlxPoint(Math.cos(angleToPlayer - 0.2), Math.sin(angleToPlayer - 0.2));
+		var playerAngleRight:FlxPoint = new FlxPoint(Math.cos(angleToPlayer + 0.2), Math.sin(angleToPlayer + 0.2));
 		var eb:EnemyBullet = bullets.recycle();
-		eb.init(x, y, 16, 16, bulletSpeed, playerPosition);
+		eb.init(x, y, 8, 8, bulletSpeed, playerPosition);
+		eb = bullets.recycle();
+		eb.init(x, y, 8, 8, bulletSpeed, playerAngleLeft);
+		eb = bullets.recycle();
+		eb.init(x, y, 8, 8, bulletSpeed, playerAngleRight);
 	}
 }

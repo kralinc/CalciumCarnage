@@ -31,6 +31,7 @@ class GameOverHud extends FlxTypedGroup<FlxSprite>
 		scoreText.scrollFactor.set(0, 0);
 
 		waveText = new FlxText(FlxG.width - FlxG.width / 3, scoreText.y, 0, "Wave NaN", 32);
+		waveText.scrollFactor.set(0, 0);
 
 		retryButton = new FlxButton(FlxG.width / 3, FlxG.height / 2, "Retry", restart);
 		retryButton.scrollFactor.set(0, 0);

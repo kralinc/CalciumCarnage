@@ -1,13 +1,16 @@
 package;
 
 import enemies.Enemy;
+import enemies.RapidGunny;
 import enemies.Shooty;
+import enemies.Shotgunny;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxState;
+import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
-import flixel.math.FlxVelocity;
+import flixel.system.FlxSound;
 import flixel.util.FlxSpriteUtil;
 import guns.Bullet;
 import guns.EnemyBullet;
@@ -51,7 +54,7 @@ class PlayState extends FlxState
 			enemyBullets.add(eb);
 		}
 
-		gun = new Pistol(25, player, bullets, 0.5, 350);
+		gun = new Pistol(20, player, bullets, 0.5, 350);
 
 		map = new GameMap(Std.int(MAPSIZE.x), Std.int(MAPSIZE.y));
 		map.follow();
@@ -100,13 +103,35 @@ class PlayState extends FlxState
 		wave++;
 		hud.setWaveText(wave);
 		enemies.clear();
-		var numEnemies:Int = Std.int((wave + 5) * 1.1);
-		for (i in 0...numEnemies)
+
+		var numShooty:Int = Std.int(5 + (wave * 0.6));
+		var numGunny:Int = Std.int((wave - 1) * 0.5);
+		var numShotGunny:Int = Std.int((wave) * 0.5);
+
+		var tileCoords:Array<FlxPoint> = map.getTileCoords(1, true);
+
+		for (i in 0...numShooty)
 		{
-			var tileCoords:Array<FlxPoint> = map.getTileCoords(1, true);
-			var ePos = tileCoords[FlxG.random.int(0, tileCoords.length - 1)];
+			var ePos:FlxPoint = getNewEnemyPosition(tileCoords);
 			enemies.add(new Shooty(enemyBullets, ePos.x, ePos.y, 4 - (0.1 * wave), 100 + (2 * wave)));
 		}
+
+		for (g in 0...numGunny)
+		{
+			var ePos:FlxPoint = getNewEnemyPosition(tileCoords);
+			enemies.add(new RapidGunny(enemyBullets, ePos.x, ePos.y, 4 - (0.1 * wave), 70 + (2 * wave)));
+		}
+
+		for (s in 0...numShotGunny)
+		{
+			var ePos:FlxPoint = getNewEnemyPosition(tileCoords);
+			enemies.add(new ShotGunny(enemyBullets, ePos.x, ePos.y, 4 - (0.1 * wave), 110 + (2 * wave)));
+		}
+	}
+
+	function getNewEnemyPosition(tileCoords:Array<FlxPoint>)
+	{
+		return tileCoords[FlxG.random.int(0, tileCoords.length - 1)];
 	}
 
 	function removeBullet(tile:FlxObject, bullet:Bullet)

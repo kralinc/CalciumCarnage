@@ -2,7 +2,6 @@ package enemies;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
 import flixel.tweens.FlxEase;
@@ -15,7 +14,6 @@ class Enemy extends FlxSprite
 {
 	static var FLICKERTIMER:Float = 1;
 	static var THINKTIMELIMIT:Float = 0.5;
-	static var MOVETOPLAYERWEIGHT:Float = 0.45;
 
 	public var seesPlayer:Bool = false;
 	public var playerPosition:FlxPoint;
@@ -28,7 +26,7 @@ class Enemy extends FlxSprite
 	var speed:Float;
 	var bulletSpeed:Float;
 	var maxHealth:Int;
-	var viewDistance:Float;
+	var moveToPlayerWeight:Float = 0.45;
 
 	public override function new(bullets:FlxTypedGroup<EnemyBullet>, x:Float, y:Float, bulletSpeed:Float, health:Int)
 	{
@@ -72,9 +70,5 @@ class Enemy extends FlxSprite
 		velocity.rotate(FlxPoint.weak(), moveDirection);
 	}
 
-	function shoot()
-	{
-		var eb:EnemyBullet = bullets.recycle();
-		eb.init(x, y, bulletSpeed, playerPosition);
-	}
+	function shoot() {}
 }

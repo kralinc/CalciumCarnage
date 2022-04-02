@@ -3,8 +3,6 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 
-using flixel.util.FlxSpriteUtil;
-
 class Player extends FlxSprite
 {
 	var speed:Float;

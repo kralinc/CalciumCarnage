@@ -26,6 +26,7 @@ class Hud extends FlxTypedGroup<FlxSprite>
 
 		// Transparent black
 		background = new FlxSprite().makeGraphic(FlxG.width, Std.int(FlxG.height / 10), 0x55000000);
+		background.scrollFactor.set(0, 0);
 
 		var spriteHeight:Float = (background.height - spriteSize) / 2;
 		// var textHeight:Float = (background.height - textSize) / 2;

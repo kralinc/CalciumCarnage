@@ -43,6 +43,7 @@ class PlayState extends FlxState
 
 	var gunPickupSound:FlxSound;
 	var playerHitSound:FlxSound;
+	var waveSound:FlxSound;
 
 	var wave:Int = 0;
 
@@ -90,6 +91,7 @@ class PlayState extends FlxState
 
 		gunPickupSound = FlxG.sound.load(AssetPaths.chachik__wav);
 		playerHitSound = FlxG.sound.load(AssetPaths.playerhit__wav);
+		waveSound = FlxG.sound.load(AssetPaths.wav__wav);
 
 		add(map);
 		add(player);
@@ -138,6 +140,7 @@ class PlayState extends FlxState
 		wave++;
 		hud.setWaveText(wave);
 		enemies.clear();
+		waveSound.play();
 
 		var numShooty:Int = Std.int(5 + (wave * 0.6));
 		var numGunny:Int = Std.int((wave - 1) * 0.5);

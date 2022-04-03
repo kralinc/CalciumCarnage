@@ -12,7 +12,8 @@ class Player extends FlxSprite
 		super(x, y);
 		this.speed = speed;
 		health = 3;
-		// loadGraphic(AssetPaths.benny8bit__png, false, 16, 20);
+		loadGraphic(AssetPaths.gaming__png, true, 16, 16);
+		animation.add("walk", [1, 0, 2, 0], 15, false);
 	}
 
 	override function update(elapsed:Float)
@@ -50,6 +51,7 @@ class Player extends FlxSprite
 		{
 			vx = speed * (vx / Math.sqrt(vx * vx + vy * vy));
 			vy = speed * (vy / Math.sqrt(vx * vx + vy * vy));
+			animation.play("walk");
 		}
 
 		velocity.set(vx, vy);

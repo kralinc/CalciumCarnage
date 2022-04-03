@@ -22,7 +22,8 @@ class AboutHud extends FlxTypedGroup<FlxSprite>
 		resourcesTitle = new FlxText(FlxG.width / 10, 0, 0, "Resources Used", 16);
 		resources = new FlxText(resourcesTitle.x, resourcesTitle.y + 35, FlxG.width * 0.4, "HaxeFlixel: haxeflixel.com\n
             \nHaxeFlixel RPG Tutorial: haxeflixel.com\n
-            \nLeshy SFMaker: www.leshylabs.com\n
+			\nSave The City - Three Red Hearts - Abstraction: abstractionmusic.com\n
+            \nLeshy SFMaker: leshylabs.com\n
             \nGIMP: gimp.org\n
             \nAudacity: audacityteam.org\n", 12);
 

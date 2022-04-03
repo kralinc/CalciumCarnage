@@ -23,7 +23,8 @@ class AboutHud extends FlxTypedGroup<FlxSprite>
 		resources = new FlxText(resourcesTitle.x, resourcesTitle.y + 35, FlxG.width * 0.4, "HaxeFlixel: haxeflixel.com\n
             \nHaxeFlixel RPG Tutorial: haxeflixel.com\n
             \nLeshy SFMaker: www.leshylabs.com\n
-            \nGIMP: gimp.org\n", 12);
+            \nGIMP: gimp.org\n
+            \nAudacity: audacityteam.org\n", 12);
 
 		controlsTitle = new FlxText(FlxG.width / 2, 0, 0, "Controls", 16);
 		controls = new FlxText(controlsTitle.x, controlsTitle.y + 35, 0, "Mouse Pointer: Aim\n

@@ -56,6 +56,7 @@ class ShotGunny extends Enemy
 
 	override function shoot()
 	{
+		super.shoot();
 		var bulletSize:Int = 10;
 		var eb:EnemyBullet;
 		var midpoint:FlxPoint = FlxPoint.weak().copyFrom(getMidpoint());

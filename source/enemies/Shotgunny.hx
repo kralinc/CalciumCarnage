@@ -1,7 +1,9 @@
 package enemies;
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVelocity;
 import flixel.util.FlxColor;
@@ -56,13 +58,14 @@ class ShotGunny extends Enemy
 	{
 		var bulletSize:Int = 10;
 		var angleToPlayer:Float = Math.atan2(playerPosition.y - y, playerPosition.x - x);
-		var playerAngleLeft:FlxPoint = new FlxPoint(Math.cos(angleToPlayer - 0.2), Math.sin(angleToPlayer - 0.2));
-		var playerAngleRight:FlxPoint = new FlxPoint(Math.cos(angleToPlayer + 0.2), Math.sin(angleToPlayer + 0.2));
-		var eb:EnemyBullet = bullets.recycle();
-		eb.init(x, y, bulletSize, bulletSize, bulletSpeed, playerPosition);
-		eb = bullets.recycle();
-		eb.init(x, y, bulletSize, bulletSize, bulletSpeed, playerAngleLeft);
-		eb = bullets.recycle();
-		eb.init(x, y, bulletSize, bulletSize, bulletSpeed, playerAngleRight);
+		var distanceToPlayer:Float = FlxMath.distanceToPoint(new FlxSprite(playerPosition.x, playerPosition.y), new FlxPoint(x, y));
+		var eb:EnemyBullet;
+		for (i in -2...2)
+		{
+			var shootDirection:FlxPoint = new FlxPoint(distanceToPlayer * Math.cos(angleToPlayer + (i * 0.2)),
+				distanceToPlayer * Math.sin(angleToPlayer + (i * 0.2)));
+			eb = bullets.recycle();
+			eb.init(x, y, bulletSize, bulletSize, bulletSpeed, shootDirection);
+		}
 	}
 }

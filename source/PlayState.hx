@@ -133,7 +133,7 @@ class PlayState extends FlxState
 
 		var numShooty:Int = Std.int(5 + (wave * 0.6));
 		var numGunny:Int = Std.int((wave - 1) * 0.5);
-		var numShotGunny:Int = Std.int((wave) * 0.5);
+		var numShotGunny:Int = Std.int((wave + 2) * 0.5);
 
 		var tileCoords:Array<FlxPoint> = map.getTileCoords(1, true);
 
@@ -230,7 +230,9 @@ class PlayState extends FlxState
 
 	function pickupGun(player:Player, gunpickup:GunPickup)
 	{
+		remove(gun);
 		gun = gunpickup.getGun();
+		add(gun);
 		hasPickup = true;
 		gunPickupUsageTimer = 0;
 		gunpickup.kill();
@@ -238,7 +240,9 @@ class PlayState extends FlxState
 
 	function endGunPickup()
 	{
+		remove(gun);
 		gun = new Pistol(GUNRADIUS, player, bullets);
+		add(gun);
 		gunPickupUsageTimer = 0;
 		gunPickupTimer = 0;
 		hasPickup = false;

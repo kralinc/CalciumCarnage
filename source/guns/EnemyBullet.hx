@@ -18,6 +18,7 @@ class EnemyBullet extends FlxSprite
 	{
 		setGraphicSize(width, height);
 		updateHitbox();
+		offset.set(width * 0.9, height * 0.9);
 		setPosition(x, y);
 		FlxVelocity.moveTowardsPoint(this, target, speed);
 	}

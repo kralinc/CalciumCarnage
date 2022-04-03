@@ -4,6 +4,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
 
 class Hud extends FlxTypedGroup<FlxSprite>
 {
@@ -14,6 +16,7 @@ class Hud extends FlxTypedGroup<FlxSprite>
 	var scoreSprite:FlxSprite;
 	var scoreCounter:FlxText;
 	var waveText:FlxText;
+	var leftText:FlxText;
 
 	var score:Int;
 
@@ -44,12 +47,16 @@ class Hud extends FlxTypedGroup<FlxSprite>
 		waveText = new FlxText(livesCounter.x + livesCounter.fieldWidth + 2 * textOffset, textHeight, 0, "", textSize);
 		waveText.scrollFactor.set(0, 0);
 
+		leftText = new FlxText(waveText.x + 11 * textOffset, textHeight, 0, "", textSize);
+		leftText.scrollFactor.set(0, 0);
+
 		add(background);
 		add(livesCounter);
 		add(livesSprite);
 		add(scoreCounter);
 		add(scoreSprite);
 		add(waveText);
+		add(leftText);
 	}
 
 	override public function update(elapsed:Float)
@@ -86,5 +93,16 @@ class Hud extends FlxTypedGroup<FlxSprite>
 	public function setWaveText(wave:Int)
 	{
 		waveText.text = "Wave " + wave;
+	}
+
+	public function setLeftText(left:Int)
+	{
+		leftText.text = "Left: " + left;
+	}
+
+	public function hit()
+	{
+		background.color = 0xff0000;
+		FlxTween.tween(background, {color: 0x550000}, 0.33);
 	}
 }

@@ -158,6 +158,8 @@ class PlayState extends FlxState
 			var ePos:FlxPoint = getNewEnemyPosition(tileCoords);
 			enemies.add(new ShotGunny(enemyBullets, ePos.x, ePos.y, 4 - (0.1 * wave), 110 + (2 * wave)));
 		}
+
+		hud.setLeftText(enemies.countLiving());
 	}
 
 	function getNewEnemyPosition(tileCoords:Array<FlxPoint>)
@@ -186,6 +188,7 @@ class PlayState extends FlxState
 			{
 				enemy.kill();
 				hud.addScore(1);
+				hud.setLeftText(enemies.countLiving());
 				if (enemies.countLiving() <= 0)
 				{
 					nextWave();
@@ -199,6 +202,7 @@ class PlayState extends FlxState
 		eb.kill();
 		if (!FlxSpriteUtil.isFlickering(player))
 		{
+			hud.hit();
 			player.health--;
 			FlxSpriteUtil.flicker(player);
 			if (player.health <= 0)

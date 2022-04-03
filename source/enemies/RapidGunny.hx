@@ -19,7 +19,7 @@ class RapidGunny extends Enemy
 		this.speed = speed;
 		thinkTimer = 0.25;
 		moveToPlayerWeight = 0.5;
-		makeGraphic(16, 16, FlxColor.GREEN);
+		loadGraphic(AssetPaths.rapidgunny__png);
 	}
 
 	override function think(elapsed:Float)

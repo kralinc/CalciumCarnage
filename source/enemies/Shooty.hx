@@ -13,6 +13,7 @@ class Shooty extends Enemy
 		super(bullets, x, y, 200, 2);
 		this.shootTimeLimit = shootTimeLimit;
 		this.speed = speed;
+		loadGraphic(AssetPaths.shooty__png);
 	}
 
 	override function think(elapsed:Float)

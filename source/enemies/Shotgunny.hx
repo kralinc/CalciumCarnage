@@ -17,7 +17,7 @@ class ShotGunny extends Enemy
 		this.shootTimeLimit = shootTimeLimit;
 		this.speed = speed;
 		moveToPlayerWeight = 0.99;
-		makeGraphic(16, 16, FlxColor.YELLOW);
+		loadGraphic(AssetPaths.shotgunny__png);
 	}
 
 	override function think(elapsed:Float)

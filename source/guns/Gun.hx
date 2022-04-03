@@ -17,7 +17,7 @@ class Gun extends FlxSprite
 	var delay:Float;
 	var bulletVelocity:Float;
 	var gunAngle:Float;
-	var shootTimer:Float;
+	var shootTimer:Float = 0;
 	var playerGunSound:FlxSound;
 
 	public override function new(radius:Float, center:FlxSprite, bullets:FlxTypedGroup<Bullet>, delay:Float, bulletVelocity:Float, ?width:Int = 20,

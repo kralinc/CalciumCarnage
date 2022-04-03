@@ -57,13 +57,11 @@ class ShotGunny extends Enemy
 	override function shoot()
 	{
 		var bulletSize:Int = 10;
-		var angleToPlayer:Float = Math.atan2(playerPosition.y - y, playerPosition.x - x);
-		var distanceToPlayer:Float = FlxMath.distanceToPoint(new FlxSprite(playerPosition.x, playerPosition.y), new FlxPoint(x, y));
 		var eb:EnemyBullet;
 		for (i in -2...2)
 		{
-			var shootDirection:FlxPoint = new FlxPoint(distanceToPlayer * Math.cos(angleToPlayer + (i * 0.2)),
-				distanceToPlayer * Math.sin(angleToPlayer + (i * 0.2)));
+			var shootDirection:FlxPoint = FlxPoint.weak().copyFrom(playerPosition);
+			shootDirection.rotate(FlxPoint.weak(x, y), (i * 0.2) * 180 / Math.PI);
 			eb = bullets.recycle();
 			eb.init(x, y, bulletSize, bulletSize, bulletSpeed, shootDirection);
 		}

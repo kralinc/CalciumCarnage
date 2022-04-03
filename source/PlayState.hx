@@ -40,7 +40,9 @@ class PlayState extends FlxState
 	var hasPickup:Bool = false;
 	var gunPickupUsageTimer:Float = 0;
 	var gunPickupUsageTimeLimit:Float = 12;
+
 	var gunPickupSound:FlxSound;
+	var playerHitSound:FlxSound;
 
 	var wave:Int = 0;
 
@@ -87,6 +89,7 @@ class PlayState extends FlxState
 		goHud.kill();
 
 		gunPickupSound = FlxG.sound.load(AssetPaths.chachik__wav);
+		playerHitSound = FlxG.sound.load(AssetPaths.playerhit__wav);
 
 		add(map);
 		add(player);
@@ -203,6 +206,7 @@ class PlayState extends FlxState
 		eb.kill();
 		if (!FlxSpriteUtil.isFlickering(player))
 		{
+			playerHitSound.play();
 			hud.hit();
 			player.health--;
 			FlxSpriteUtil.flicker(player);

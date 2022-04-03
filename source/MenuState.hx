@@ -26,6 +26,10 @@ class MenuState extends FlxState
 		add(aboutButton);
 		add(aboutHud);
 		super.create();
+		// if (FlxG.sound.music == null)
+		// {
+		FlxG.sound.playMusic(AssetPaths.savethecity__wav, 1, true);
+		// }
 	}
 
 	public override function update(elapsed:Float)

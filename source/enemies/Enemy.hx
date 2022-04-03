@@ -17,6 +17,8 @@ class Enemy extends FlxSprite
 	static var THINKTIMELIMIT:Float = 0.5;
 	static var SHOOTSOUND:FlxSound;
 	static var SHOOTSOOUND2:FlxSound;
+	static var DIESOUND:FlxSound;
+	static var HITSOUND:FlxSound;
 
 	public var seesPlayer:Bool = false;
 	public var playerPosition:FlxPoint;
@@ -42,6 +44,8 @@ class Enemy extends FlxSprite
 		this.flicker(FLICKERTIMER, 0.05, true);
 		SHOOTSOUND = FlxG.sound.load(AssetPaths.enemygun__wav);
 		SHOOTSOOUND2 = FlxG.sound.load(AssetPaths.enemygunb__wav);
+		HITSOUND = FlxG.sound.load(AssetPaths.enemyhit__wav);
+		DIESOUND = FlxG.sound.load(AssetPaths.enemydie__wav);
 	}
 
 	public override function update(elapsed:Float)
@@ -56,6 +60,7 @@ class Enemy extends FlxSprite
 	public override function kill()
 	{
 		alive = false;
+		DIESOUND.play();
 
 		FlxTween.tween(this, {alpha: 0, y: y - 16, angle: 90}, 0.22, {ease: FlxEase.bounceOut, onComplete: finishKill});
 	}
@@ -69,6 +74,8 @@ class Enemy extends FlxSprite
 	{
 		color = 0xff0000;
 		FlxTween.tween(this, {color: 0xffffff}, 0.33);
+		HITSOUND.stop();
+		HITSOUND.play();
 	}
 
 	function think(elapsed:Float) {}

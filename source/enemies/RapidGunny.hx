@@ -64,7 +64,8 @@ class RapidGunny extends Enemy
 
 	override function shoot()
 	{
+		var midpoint:FlxPoint = FlxPoint.weak().copyFrom(getMidpoint());
 		var eb:EnemyBullet = bullets.recycle();
-		eb.init(x, y, 8, 8, bulletSpeed, playerPosition);
+		eb.init(midpoint.x, midpoint.y, 8, 8, bulletSpeed, playerPosition);
 	}
 }

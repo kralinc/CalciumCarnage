@@ -58,10 +58,11 @@ class ShotGunny extends Enemy
 	{
 		var bulletSize:Int = 10;
 		var eb:EnemyBullet;
+		var midpoint:FlxPoint = FlxPoint.weak().copyFrom(getMidpoint());
 		for (i in -2...2)
 		{
 			var shootDirection:FlxPoint = FlxPoint.weak().copyFrom(playerPosition);
-			shootDirection.rotate(FlxPoint.weak(x, y), (i * 0.2) * 180 / Math.PI);
+			shootDirection.rotate(FlxPoint.weak().copyFrom(midpoint), (i * 0.2) * 180 / Math.PI);
 			eb = bullets.recycle();
 			eb.init(x, y, bulletSize, bulletSize, bulletSpeed, shootDirection);
 		}

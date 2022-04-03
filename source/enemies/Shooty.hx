@@ -53,6 +53,7 @@ class Shooty extends Enemy
 	override function shoot()
 	{
 		var eb:EnemyBullet = bullets.recycle();
-		eb.init(x, y, 16, 16, bulletSpeed, playerPosition);
+		var midpoint:FlxPoint = FlxPoint.weak().copyFrom(getMidpoint());
+		eb.init(midpoint.x, midpoint.y, 16, 16, bulletSpeed, playerPosition);
 	}
 }

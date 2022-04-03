@@ -102,7 +102,8 @@ class Hud extends FlxTypedGroup<FlxSprite>
 
 	public function hit()
 	{
-		background.color = 0xff0000;
-		FlxTween.tween(background, {color: 0x550000}, 0.33);
+		background.color = 0xffff0000;
+		trace(background.color);
+		FlxTween.tween(background, {color: 0x55000000}, 0.33);
 	}
 }

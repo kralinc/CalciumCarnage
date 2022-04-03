@@ -31,7 +31,8 @@ class GunPickup extends FlxSprite
 	{
 		setPosition(x, y);
 		this.gun = gun;
-		makeGraphic(16, 16, FlxColor.CYAN);
+		// makeGraphic(16, 16, FlxColor.CYAN);
+		loadGraphic(AssetPaths.pickup__png);
 	}
 
 	public function getGun():Gun
@@ -44,7 +45,10 @@ class GunPickup extends FlxSprite
 		{
 			return new MachineGun(PlayState.GUNRADIUS, gunCenter, bullets);
 		}
-		else if (gun == GunType.SHOTGUN) {}
+		else if (gun == GunType.SHOTGUN)
+		{
+			return new Shotgun(PlayState.GUNRADIUS, gunCenter, bullets);
+		}
 
 		return null;
 	}

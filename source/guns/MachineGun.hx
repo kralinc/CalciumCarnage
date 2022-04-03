@@ -10,7 +10,7 @@ class MachineGun extends Gun
 {
 	public override function new(radius:Float, center:FlxSprite, bullets:FlxTypedGroup<Bullet>)
 	{
-		super(0, center, bullets, 0.1, 400, 30, 12);
+		super(0, center, bullets, 0.1, 450, 30, 12);
 		loadGraphic(AssetPaths.bangbang__png);
 	}
 

@@ -18,6 +18,7 @@ import guns.Gun;
 import guns.GunPickup;
 import guns.MachineGun;
 import guns.Pistol;
+import guns.Shotgun;
 import hud.GameOverHud;
 import hud.Hud;
 
@@ -227,7 +228,7 @@ class PlayState extends FlxState
 		var tileCoords:Array<FlxPoint> = map.getTileCoords(1, true);
 		var pos:FlxPoint = getNewEnemyPosition(tileCoords);
 		gunPickup.revive();
-		gunPickup.init(pos.x, pos.y, GunType.MACHINEGUN);
+		gunPickup.init(pos.x, pos.y, (FlxG.random.float() < 0.5) ? GunType.MACHINEGUN : GunType.SHOTGUN);
 		gunPickupTimer = 0;
 		gunPickupTimeLimit = FlxG.random.int(30, 75);
 	}

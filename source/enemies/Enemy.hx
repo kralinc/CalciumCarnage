@@ -60,6 +60,12 @@ class Enemy extends FlxSprite
 		exists = false;
 	}
 
+	public function hit()
+	{
+		color = 0xff0000;
+		FlxTween.tween(this, {color: 0xffffff}, 0.33);
+	}
+
 	function think(elapsed:Float) {}
 
 	function moveRandomly()

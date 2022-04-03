@@ -177,6 +177,7 @@ class PlayState extends FlxState
 		if (!FlxSpriteUtil.isFlickering(enemy) && enemy.alive)
 		{
 			enemy.health--;
+			enemy.hit();
 			if (enemy.health <= 0)
 			{
 				enemy.kill();

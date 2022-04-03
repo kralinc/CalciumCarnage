@@ -1,5 +1,6 @@
 package guns;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
@@ -14,6 +15,7 @@ class MachineGun extends Gun
 
 	public override function shoot()
 	{
+		FlxG.camera.shake(0.003, 0.05);
 		var vx:Float = bulletVelocity * Math.cos(gunAngle);
 		var vy:Float = bulletVelocity * Math.sin(gunAngle);
 		var boolet:Bullet = new Bullet(x, y, new FlxPoint(vx, vy), BulletOwner.PLAYER);

@@ -6,6 +6,7 @@ import enemies.Shooty;
 import enemies.Shotgunny;
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -139,7 +140,7 @@ class PlayState extends FlxState
 		var numGunny:Int = Std.int((wave - 1) * 0.5);
 		var numShotGunny:Int = Std.int((wave) * 0.33);
 
-		var tileCoords:Array<FlxPoint> = map.getTileCoords(1, true);
+		var tileCoords:Array<FlxPoint> = map.getTileCoords(1, false);
 
 		for (i in 0...numShooty)
 		{
@@ -150,7 +151,7 @@ class PlayState extends FlxState
 		for (g in 0...numGunny)
 		{
 			var ePos:FlxPoint = getNewEnemyPosition(tileCoords);
-			enemies.add(new RapidGunny(enemyBullets, ePos.x, ePos.y, 4 - (0.1 * wave), 70 + (2 * wave)));
+			enemies.add(new RapidGunny(enemyBullets, ePos.x, ePos.y, 3 - (0.1 * wave), 70 + (2 * wave)));
 		}
 
 		for (s in 0...numShotGunny)
@@ -205,6 +206,7 @@ class PlayState extends FlxState
 			hud.hit();
 			player.health--;
 			FlxSpriteUtil.flicker(player);
+			FlxSpriteUtil.flicker(gun);
 			if (player.health <= 0)
 			{
 				gameOver();

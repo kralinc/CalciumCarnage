@@ -8,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.tile.FlxBaseTilemap.FlxTilemapDiagonalPolicy;
 import flixel.ui.FlxButton;
 import openfl.system.System;
+import openfl.utils.AssetManifest;
 
 class GameOverHud extends FlxTypedGroup<FlxSprite>
 {
@@ -16,6 +17,7 @@ class GameOverHud extends FlxTypedGroup<FlxSprite>
 	var waveText:FlxText;
 	var scoreText:FlxText;
 	var retryButton:FlxButton;
+	var menuButton:FlxButton;
 	var quitButton:FlxButton;
 
 	public override function new()
@@ -33,10 +35,13 @@ class GameOverHud extends FlxTypedGroup<FlxSprite>
 		waveText = new FlxText(FlxG.width - FlxG.width / 3, scoreText.y, 0, "Wave NaN", 32);
 		waveText.scrollFactor.set(0, 0);
 
-		retryButton = new FlxButton(FlxG.width / 3, FlxG.height / 2, "Retry", restart);
+		retryButton = new FlxButton(FlxG.width / 2.5, FlxG.height / 2, "Retry", restart);
 		retryButton.scrollFactor.set(0, 0);
 
-		quitButton = new FlxButton(retryButton.x, retryButton.y + 35, "Quit", quit);
+		menuButton = new FlxButton(retryButton.x, retryButton.y + 35, "Menu", menu);
+		menuButton.scrollFactor.set(0, 0);
+
+		quitButton = new FlxButton(retryButton.x, menuButton.y + 35, "Quit", quit);
 		quitButton.scrollFactor.set(0, 0);
 
 		add(background);
@@ -45,6 +50,7 @@ class GameOverHud extends FlxTypedGroup<FlxSprite>
 		add(quitButton);
 		add(scoreText);
 		add(waveText);
+		add(menuButton);
 	}
 
 	public function setData(score:Int, wave:Int)
@@ -61,5 +67,10 @@ class GameOverHud extends FlxTypedGroup<FlxSprite>
 	function quit()
 	{
 		System.exit(0);
+	}
+
+	function menu()
+	{
+		FlxG.switchState(new MenuState());
 	}
 }

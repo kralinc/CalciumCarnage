@@ -28,7 +28,8 @@ class Hud extends FlxTypedGroup<FlxSprite>
 		score = 0;
 
 		// Transparent black
-		background = new FlxSprite().makeGraphic(FlxG.width, Std.int(FlxG.height / 10), 0x55000000);
+		background = new FlxSprite().makeGraphic(FlxG.width, Std.int(FlxG.height / 10), 0x55ffffff);
+		background.color = 0x000000;
 		background.scrollFactor.set(0, 0);
 
 		var spriteHeight:Float = (background.height - spriteSize) / 2;
@@ -102,8 +103,7 @@ class Hud extends FlxTypedGroup<FlxSprite>
 
 	public function hit()
 	{
-		background.color = 0xffff0000;
-		trace(background.color);
-		FlxTween.tween(background, {color: 0x55000000}, 0.33);
+		background.color = 0xff0000;
+		FlxTween.tween(background, {color: 0x000000}, 0.33);
 	}
 }

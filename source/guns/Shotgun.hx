@@ -11,7 +11,7 @@ class Shotgun extends Gun
 	public override function new(radius:Float, center:FlxSprite, bullets:FlxTypedGroup<Bullet>)
 	{
 		super(0, center, bullets, 0.5, 400, 20, 15);
-		// loadGraphic(AssetPaths.gun__png);
+		loadGraphic(AssetPaths.shotgun__png);
 	}
 
 	public override function shoot()

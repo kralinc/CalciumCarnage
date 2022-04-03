@@ -38,6 +38,7 @@ class PlayState extends FlxState
 	var hasPickup:Bool = false;
 	var gunPickupUsageTimer:Float = 0;
 	var gunPickupUsageTimeLimit:Float = 12;
+	var gunPickupSound:FlxSound;
 
 	var wave:Int = 0;
 
@@ -82,6 +83,8 @@ class PlayState extends FlxState
 
 		goHud = new GameOverHud();
 		goHud.kill();
+
+		gunPickupSound = FlxG.sound.load(AssetPaths.chachik__wav);
 
 		add(map);
 		add(player);
@@ -133,7 +136,7 @@ class PlayState extends FlxState
 
 		var numShooty:Int = Std.int(5 + (wave * 0.6));
 		var numGunny:Int = Std.int((wave - 1) * 0.5);
-		var numShotGunny:Int = Std.int((wave + 2) * 0.5);
+		var numShotGunny:Int = Std.int((wave) * 0.33);
 
 		var tileCoords:Array<FlxPoint> = map.getTileCoords(1, true);
 
@@ -231,6 +234,7 @@ class PlayState extends FlxState
 
 	function pickupGun(player:Player, gunpickup:GunPickup)
 	{
+		gunPickupSound.play();
 		remove(gun);
 		gun = gunpickup.getGun();
 		add(gun);

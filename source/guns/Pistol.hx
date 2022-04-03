@@ -10,6 +10,7 @@ class Pistol extends Gun
 	public override function new(radius:Float, center:FlxSprite, bullets:FlxTypedGroup<Bullet>)
 	{
 		super(0, center, bullets, 0.5, 350, 20, 10);
+		loadGraphic(AssetPaths.gun__png);
 	}
 
 	public override function shoot()

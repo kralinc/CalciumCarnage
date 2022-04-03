@@ -31,6 +31,8 @@ class Gun extends FlxSprite
 		this.bulletVelocity = bulletVelocity;
 		playerGunSound = FlxG.sound.load(AssetPaths.gun__wav);
 		makeGraphic(width, height, FlxColor.RED);
+		setFacingFlip(LEFT, false, true);
+		setFacingFlip(RIGHT, false, false);
 	}
 
 	override function update(elapsed:Float)
@@ -67,6 +69,14 @@ class Gun extends FlxSprite
 		x = center.x + radius * Math.cos(gunAngle);
 		y = center.y + radius * Math.sin(gunAngle);
 		setPosition(x, y);
+		if (angle > 90 || angle < -90)
+		{
+			facing = LEFT;
+		}
+		else
+		{
+			facing = RIGHT;
+		}
 	}
 
 	public function shoot() {}

@@ -39,7 +39,7 @@ class MenuState extends FlxState
 		highScoreText = new FlxText(FlxG.width / 4, skull.y + skull.height + 30, 0, "High Score: " + _gameSave.data.highscore, 32);
 		startButton = new FlxButton(FlxG.width / 2.5, FlxG.height / 1.5, "Start!", start);
 		aboutButton = new FlxButton(startButton.x, startButton.y + 35, "About", about);
-		meText = new FlxText(0, FlxG.height - 16, "2022 Cactus Dan  -  https://kralinc.github.io - https://cactusdan.itch.io");
+		meText = new FlxText(0, FlxG.height - 16, "Ludum Dare 50 - 2022 Cactus Dan  -  https://kralinc.github.io - https://cactusdan.itch.io");
 
 		add(title);
 		add(subtitle);

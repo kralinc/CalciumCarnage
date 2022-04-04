@@ -6,28 +6,26 @@ import enemies.Shooty;
 import enemies.Shotgunny;
 import flixel.FlxG;
 import flixel.FlxObject;
-import flixel.FlxSprite;
 import flixel.FlxState;
-import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
+import flixel.util.FlxSave;
 import flixel.util.FlxSpriteUtil;
 import guns.Bullet;
 import guns.EnemyBullet;
 import guns.Gun;
 import guns.GunPickup;
-import guns.MachineGun;
 import guns.Pistol;
-import guns.Shotgun;
 import hud.GameOverHud;
 import hud.Hud;
 
 class PlayState extends FlxState
 {
-	private static var MAPSIZE:FlxPoint = new FlxPoint(25, 25);
+	private static var MAPSIZE:FlxPoint = new FlxPoint(20, 20);
 	public static var GUNRADIUS:Float = 20;
 
+	var _gameSave:FlxSave;
 	var player:Player;
 	var gun:Gun;
 	var map:GameMap;
@@ -46,6 +44,7 @@ class PlayState extends FlxState
 	var waveSound:FlxSound;
 
 	var wave:Int = 0;
+	var openTiles:Array<FlxPoint>;
 
 	public var bullets:FlxTypedGroup<Bullet>;
 	public var enemyBullets:FlxTypedGroup<EnemyBullet>;
@@ -53,7 +52,10 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
-		player = new Player(50, 50);
+		_gameSave = new FlxSave();
+		_gameSave.bind("highscore");
+
+		player = new Player(50, 50, 215);
 
 		bullets = new FlxTypedGroup();
 		for (i in 0...100)
@@ -77,7 +79,9 @@ class PlayState extends FlxState
 		map.follow();
 		map.setTileProperties(1, NONE);
 		map.setTileProperties(2, ANY);
-		var playerStart:FlxPoint = map.getTileCoords(1, false)[Std.int(MAPSIZE.y)];
+		openTiles = map.getTileCoords(1, false);
+
+		var playerStart:FlxPoint = openTiles[Std.int(openTiles.length / 2)];
 		player.setPosition(playerStart.x, playerStart.y);
 
 		FlxG.camera.follow(player, TOPDOWN_TIGHT, 1);
@@ -143,35 +147,33 @@ class PlayState extends FlxState
 		waveSound.play();
 
 		var numShooty:Int = Std.int(5 + (wave * 0.6));
-		var numGunny:Int = Std.int((wave - 1) * 0.5);
+		var numGunny:Int = Std.int((wave) * 0.5);
 		var numShotGunny:Int = Std.int((wave) * 0.33);
-
-		var tileCoords:Array<FlxPoint> = map.getTileCoords(1, false);
 
 		for (i in 0...numShooty)
 		{
-			var ePos:FlxPoint = getNewEnemyPosition(tileCoords);
+			var ePos:FlxPoint = getNewEnemyPosition();
 			enemies.add(new Shooty(enemyBullets, ePos.x, ePos.y, 4 - (0.1 * wave), 100 + (2 * wave)));
 		}
 
 		for (g in 0...numGunny)
 		{
-			var ePos:FlxPoint = getNewEnemyPosition(tileCoords);
-			enemies.add(new RapidGunny(enemyBullets, ePos.x, ePos.y, 3 - (0.1 * wave), 70 + (2 * wave)));
+			var ePos:FlxPoint = getNewEnemyPosition();
+			enemies.add(new RapidGunny(enemyBullets, ePos.x, ePos.y, 5 - (0.1 * wave), 70 + (2 * wave)));
 		}
 
 		for (s in 0...numShotGunny)
 		{
-			var ePos:FlxPoint = getNewEnemyPosition(tileCoords);
+			var ePos:FlxPoint = getNewEnemyPosition();
 			enemies.add(new ShotGunny(enemyBullets, ePos.x, ePos.y, 4 - (0.1 * wave), 110 + (2 * wave)));
 		}
 
 		hud.setLeftText(enemies.countLiving());
 	}
 
-	function getNewEnemyPosition(tileCoords:Array<FlxPoint>)
+	function getNewEnemyPosition()
 	{
-		return tileCoords[FlxG.random.int(0, tileCoords.length - 1)];
+		return openTiles[FlxG.random.int(0, openTiles.length - 1)];
 	}
 
 	function removeBullet(tile:FlxObject, bullet:Bullet)
@@ -238,8 +240,7 @@ class PlayState extends FlxState
 
 	function resetGunPickup()
 	{
-		var tileCoords:Array<FlxPoint> = map.getTileCoords(1, true);
-		var pos:FlxPoint = getNewEnemyPosition(tileCoords);
+		var pos:FlxPoint = getNewEnemyPosition();
 		gunPickup.revive();
 		gunPickup.init(pos.x, pos.y, (FlxG.random.float() < 0.5) ? GunType.MACHINEGUN : GunType.SHOTGUN);
 		gunPickupTimer = 0;
@@ -274,5 +275,11 @@ class PlayState extends FlxState
 		hud.kill();
 		goHud.revive();
 		goHud.setData(hud.getScore(), wave);
+
+		if (_gameSave.data.highscore == null || _gameSave.data.highscore < hud.getScore())
+		{
+			_gameSave.data.highscore = hud.getScore();
+			_gameSave.flush();
+		}
 	}
 }

@@ -50,7 +50,7 @@ class Enemy extends FlxSprite
 
 	public override function update(elapsed:Float)
 	{
-		if (!this.isFlickering())
+		if (!this.isFlickering() && alive)
 		{
 			think(elapsed);
 		}

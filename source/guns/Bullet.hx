@@ -23,7 +23,7 @@ class Bullet extends FlxSprite
 		super(x, y);
 		this.velocity = velocity;
 		this.owner = owner;
-		makeGraphic(8, 8, FlxColor.WHITE);
+		loadGraphic(AssetPaths.bullet__png);
 	}
 
 	public function init(x:Float, y:Float, velocity:FlxPoint, owner:String)
